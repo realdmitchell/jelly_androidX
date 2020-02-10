@@ -83,15 +83,7 @@ class WebClient extends WebViewClient {
         if (request.isForMainFrame()) {
             WebViewExt webViewExt = (WebViewExt) view;
             String url = request.getUrl().toString();
-            boolean needsLookup = request.hasGesture()
-                    || !TextUtils.equals(url, webViewExt.getLastLoadedUrl());
-
-            if (!webViewExt.isIncognito()
-                    && needsLookup
-                    && !request.isRedirect()
-                    && startActivityForUrl(view, url)) {
-                return true;
-            } else if (!webViewExt.getRequestHeaders().isEmpty()) {
+            if (url.startsWith("https://")) {
                 webViewExt.followUrl(url);
                 return true;
             }

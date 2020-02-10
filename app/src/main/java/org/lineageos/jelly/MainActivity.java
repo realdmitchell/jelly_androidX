@@ -68,7 +68,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -199,7 +199,20 @@ public class MainActivity extends WebViewExtActivity implements
             autoCompleteTextView.clearFocus();
             mWebView.loadUrl(url);
         });
-
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    // clearing app data
+                    Runtime runtime = Runtime.getRuntime();
+                    runtime.exec("pm clear org.lineageos.jelly");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                //Snackbar.make(view, "All clear.", Snackbar.LENGTH_SHORT).show();
+            }
+        });
         // Make sure prefs are set before loading them
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
 
@@ -447,11 +460,13 @@ public class MainActivity extends WebViewExtActivity implements
                         Toast.makeText(this, "\u2707" + getExternalFilesDir(null), Toast.LENGTH_LONG).show();
                         break;
                     case R.id.desktop_mode:
-                        mWebView.setDesktopMode(!isDesktop);
-                        desktopMode.setTitle(getString(isDesktop ?
-                                R.string.menu_desktop_mode : R.string.menu_mobile_mode));
-                        desktopMode.setIcon(ContextCompat.getDrawable(this, isDesktop ?
-                                R.drawable.ic_desktop : R.drawable.ic_mobile));
+                        try {
+                            // clearing app data
+                            Runtime runtime = Runtime.getRuntime();
+                            runtime.exec("pm clear org.lineageos.jelly");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case R.id.menu_settings:
                         startActivity(new Intent(this, SettingsActivity.class));
